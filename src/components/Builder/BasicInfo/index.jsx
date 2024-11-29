@@ -182,7 +182,22 @@ const BasicInfo = ({ profileData }) => {
       </Row>
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="josh_joining_date" label="JOSH Joining Date">
+          <Form.Item
+            name="josh_joining_date"
+            label="JOSH Joining Date"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value && value > dayjs()
+                    ? Promise.reject(
+                        new Error(
+                          "Joining date cannot be current in the future",
+                        ),
+                      )
+                    : Promise.resolve(),
+              },
+            ]}
+          >
             <DatePicker style={{ width: "100%" }} picker="month" />
           </Form.Item>
         </Col>

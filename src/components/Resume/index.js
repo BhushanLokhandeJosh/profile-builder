@@ -457,18 +457,29 @@ const Resume = forwardRef(({ data }, ref) => {
                 </div>
                 <div>
                   {(profile?.years_of_experience ||
-                    profile?.josh_joining_date?.String) && (
-                    <div className={styles.iconTextWrapper}>
-                      <CheckSquareOutlined />{" "}
-                      <span>
-                        {calculateTotalExperience(
-                          profile?.years_of_experience,
-                          profile?.josh_joining_date?.String,
-                        )}{" "}
-                        Years of Experience
-                      </span>
-                    </div>
-                  )}
+                    profile?.josh_joining_date?.String) &&
+                    (() => {
+                      const years = calculateTotalExperience(
+                        profile?.years_of_experience,
+                        profile?.josh_joining_date?.String,
+                      );
+
+                      if (years === 0) {
+                        return null;
+                      }
+
+                      return (
+                        <div className={styles.iconTextWrapper}>
+                          <CheckSquareOutlined />{" "}
+                          <span>
+                            {years < 1
+                              ? `${Math.floor(years * 12)} Months of Experience`
+                              : `${years} Year${years > 1 ? "s" : ""} of Experience`}{" "}
+                          </span>
+                        </div>
+                      );
+                    })()}
+
                   {profile?.email && contactDetails && (
                     <div className={styles.iconTextWrapper}>
                       <MailOutlined /> <span>{profile?.email}</span>
